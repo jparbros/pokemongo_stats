@@ -3,6 +3,7 @@ require 'sqlite3'
 require 'yaml'
 
 set :public_folder, File.dirname(__FILE__) + '/public'
+set :environment, :production
 
 DB = SQLite3::Database.new "./pogom.db"
 POKEMONS = YAML.load_file('pokemons.yml')
