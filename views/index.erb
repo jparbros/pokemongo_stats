@@ -60,9 +60,13 @@
                 <h3 class="panel-title"><%= pokemon[:name].capitalize %></h3>
               </div>
               <div class="panel-body">
-                <img class="pokemon-avatar" src="/images/avatars/<%= pokemon[:id] %>.png">
+                <a href="/heat-map/<%= pokemon[:id]%>">
+                  <img class="pokemon-avatar" src="/images/avatars/<%= pokemon[:id] %>.png">
+                </a>
                 <br />
                 <%= pokemon[:count] %> veces visto.
+                <br />
+                Probabilidad de encontrarlo: <%= pokemon[:chance] %> %
               </div>
             </div>
           </div>
