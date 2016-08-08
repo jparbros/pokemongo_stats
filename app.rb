@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'sqlite3'
 require 'yaml'
-require 'pry'
 
 set :public_folder, File.dirname(__FILE__) + '/public'
 
