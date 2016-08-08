@@ -1,0 +1,81 @@
+body, html {
+  height: 100%;
+  width: 100%;
+}
+
+.navbar .navbar-brand img {
+  width: 45px;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+.navigation {
+  position: fixed;
+  bottom: 0px;
+}
+
+.navigation .current-pokemon {
+  background-color: #fff;
+  -webkit-border-top-left-radius: 10px;
+  -webkit-border-top-right-radius: 10px;
+  -moz-border-radius-topleft: 10px;
+  -moz-border-radius-topright: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  width: 350px;
+  padding: 5px;
+  margin: 0 5px;
+}
+
+.navigation.less .change-pokemon {
+  visibility: hidden;
+  display: none;
+  transition: visibility 2s;
+}
+
+.navigation.more .change-pokemon {
+  visibility: visible;
+  display: block;
+  transition: visibility 2s;
+}
+
+.navigation .show-all {
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
+}
+
+.navigation.less .show-all {
+  background-image: url('/images/more.png');
+}
+
+.navigation.more .show-all {
+  background-image: url('/images/less.png');
+}
+
+.navigation .change-pokemon {
+  background-color: #fff;
+}
+
+.navigation .change-pokemon .single-pokemon {
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+  display: inline-block;
+}
+
+.navigation .change-pokemon .single-pokemon.disabled {
+  opacity: 0.5;
+}
+
+.navigation .change-pokemon .single-pokemon.disabled a {
+  cursor: default;
+}
+
+.pokemon-avatar {
+  height: 100px;
+}

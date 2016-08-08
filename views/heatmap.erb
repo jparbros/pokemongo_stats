@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Pokemon Stats</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="/css/main.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">
+            <img class='pokemon-go-logo' src="/images/pokemon_go_logo.png">
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a href="/heat-map/1">Mapa de calor</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div id="map"></div>
+    <div class="navigation less">
+      <div class="current-pokemon">
+        <label>Mostrando (<%= @coords.count %>):</label>
+        <img src="/images/icons/<%= @pokemon[:id]%>.png">
+        <span class="current-pokemon-name"><%= @pokemon[:name] %></span>
+        <a href="#" class="show-all pull-right"></a>
+      </div>
+      <div class="change-pokemon">
+        <% @pokemons.each do |pokemon| %>
+          <% available_pokemon = @available_pokemons.include?(pokemon[:id]) %>
+          <div class="single-pokemon <%= available_pokemon ? '' : 'disabled' %>">
+            <a href="/heat-map/<%=pokemon[:id] %>" data-toggle="tooltip" data-placement="top" title="<%= pokemon[:name] %>"><img src="/images/icons/<%= pokemon[:id]%>.png"></a>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHcO46LEtubWlhLvk2cPybS0Jdf1_6eOc&libraries=visualization&callback=initMap"></script>
+    <script type="text/javascript">
+    var map, heatmap, points= [], bounds;
+
+    function getPoints() {
+      bounds = new google.maps.LatLngBounds();
+      <% @coords.each do |coord| %>
+        bounds.extend( new google.maps.LatLng(<%= coord.first %>, <%= coord.last %>) );
+        points.push(new google.maps.LatLng(<%= coord.first %>, <%= coord.last %>));
+      <% end %>
+    }
+
+    function initMap() {
+      getPoints();
+      map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 13,
+        mapTypeId: 'roadmap'
+      });
+
+      heatmap = new google.maps.visualization.HeatmapLayer({
+        data: points,
+        map: map
+      });
+
+    <% @coords.each do |coord| %>
+      var marker = new google.maps.Marker({
+          position: {lat: <%= coord.first%>, lng: <%= coord.last%>},
+          map: map,
+          animation: google.maps.Animation.DROP,
+          title: "<%= coord.first%>, <%= coord.last%>"
+        });
+      google.maps.event.addListener(marker , 'click', function(){
+            var infowindow = new google.maps.InfoWindow({
+              content: "<%= coord.first%>, <%= coord.last%>",
+              position: {lat: <%= coord.first%>, lng: <%= coord.last%>},
+            });
+            infowindow.open(map);
+        });
+    <% end %>
+
+      map.fitBounds(bounds);
+    }
+
+    $(document).ready(function() {
+      $('[data-toggle="tooltip"]').tooltip();
+
+      $('.disabled a').click(function(event) {
+        event.preventDefault();
+      });
+
+      $('.navigation.less .show-all').click(function(event) {
+        event.preventDefault();
+        if($('.navigation').hasClass('less')) {
+          $('.navigation').removeClass('less').addClass('more');
+        } else {
+          $('.navigation').removeClass('more').addClass('less');
+        }
+      });
+    });
+    </script>
+  </body>
+</html>
