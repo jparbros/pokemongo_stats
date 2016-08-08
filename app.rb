@@ -5,13 +5,14 @@ require 'pry'
 
 set :public_folder, File.dirname(__FILE__) + '/public'
 
-DB = SQLite3::Database.new "../PokemonGo-Map/pogom.db"
+DB = SQLite3::Database.new "./pogom.db"
 POKEMONS = YAML.load_file('pokemons.yml')
 
 get '/' do
   @pokemons = DB.execute("SELECT pokemon_id, COUNT(pokemon_id) FROM pokemon GROUP BY pokemon_id ORDER BY pokemon_id").map do |pokemon|
     {id: pokemon.first, name: POKEMONS[pokemon.first], count: pokemon.last }
   end
+  @sorted_pokemons = @pokemons.sort {|a, b| b[:count] <=> a[:count] }
   erb :index
 end
 

@@ -79,3 +79,8 @@ body, html {
 .pokemon-avatar {
   height: 100px;
 }
+
+.pokemons-more-see img, .pokemons-less-see img {
+  width: 50px;
+  height: auto;
+}

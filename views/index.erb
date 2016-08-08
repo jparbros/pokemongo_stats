@@ -18,13 +18,41 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-            <li><a href="/heat-map/1">Mapa de calor</a></li>
+            <li><a href="/heat-map/<%= @pokemons.first[:id] %>">Mapa de calor</a></li>
           </ul>
         </div>
       </div>
     </nav>
     <div class="container-fluid">
       <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-default text-center">
+            <div class="panel-body">
+              <h3>Pokemones vistos: <%= @pokemons.count %></h3>
+              <div class="pokemons-more-see row">
+                <h3>Pokemones mas vistos</h3>
+                <% @sorted_pokemons[0..9].each_with_index do |pokemon, index| %>
+                  <div class="col-md-1 <%= "col-md-offset-1" if index == 0 %>">
+                    <img class="pokemon-avatar" src="/images/avatars/<%= pokemon[:id] %>.png">
+                    <br />
+                    <b>(<%= pokemon[:count]%>)</b>
+                  </div>
+                <% end %>
+              </div>
+              
+              <div class="pokemons-less-see row">
+                <h3>Pokemones menos vistos</h3>
+                <% @sorted_pokemons.reverse[0..9].each_with_index do |pokemon, index| %>
+                  <div class="col-md-1 <%= "col-md-offset-1" if index == 0 %>">
+                    <img class="pokemon-avatar" src="/images/avatars/<%= pokemon[:id] %>.png">
+                    <br />
+                    <b>(<%= pokemon[:count]%>)</b>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
         <% @pokemons.each_with_index do |pokemon, index| %>
           <div class="col-md-3">
             <div class="panel panel-default text-center">
@@ -33,6 +61,8 @@
               </div>
               <div class="panel-body">
                 <img class="pokemon-avatar" src="/images/avatars/<%= pokemon[:id] %>.png">
+                <br />
+                <%= pokemon[:count] %> veces visto.
               </div>
             </div>
           </div>
